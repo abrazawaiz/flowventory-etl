@@ -1,0 +1,49 @@
+# Python & Environment
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+*.log
+*.sqlite3
+venv/
+.env
+.env.*
+
+# Jupyter / Cache / Temp
+.ipynb_checkpoints/
+*.ipynb
+*.tmp
+*.bak
+
+# Data Files
+data/raw/
+data/processed/
+data/temp/
+logs/
+!data/.gitkeep
+!logs/.gitkeep
+
+# Docker / Airflow
+*.pid
+*.sock
+*.db
+airflow_data/
+postgres/data/
+postgres/*.csv
+dags/__pycache__/
+app/__pycache__/
+dags/.idea/
+.airflow/
+
+# Kaggle & Secrets
+/secrets/
+/*.json
+*.key
+*.csv
+*.zip
+
+# VSCode & MacOS
+.vscode/
+.DS_Store
+.idea/

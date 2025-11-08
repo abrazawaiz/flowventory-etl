@@ -1,0 +1,121 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: flowventory_postgres
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - flowventory_network
+
+  airflow-init:
+    build: .
+    container_name: flowventory_airflow_init
+    user: "airflow"
+    restart: "no"
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        airflow db migrate &&
+        airflow users create \
+          --username admin \
+          --password admin \
+          --firstname Airflow \
+          --lastname Admin \
+          --role Admin \
+          --email admin@flowventory.local
+    env_file:
+      - .env
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      - airflow_data:/opt/airflow
+      - ./app:/app
+      - ./data:/app/data
+      - ./secrets:/app/secrets
+      - ./logs:/opt/airflow/logs
+      - ./dags:/opt/airflow/dags
+    networks:
+      - flowventory_network
+
+  airflow-webserver:
+    build: .
+    container_name: flowventory_airflow_webserver
+    user: "airflow"
+    restart: always
+    depends_on:
+      - airflow-init
+    env_file:
+      - .env
+    environment:
+      - PYTHONPATH=/app
+    ports:
+      - "8080:8080"
+    command: webserver
+    volumes:
+      - airflow_data:/opt/airflow
+      - ./app:/app
+      - ./data:/app/data
+      - ./secrets:/app/secrets
+      - ./logs:/opt/airflow/logs
+      - ./dags:/opt/airflow/dags
+    networks:
+      - flowventory_network
+
+  airflow-scheduler:
+    build: .
+    container_name: flowventory_airflow_scheduler
+    user: "airflow"
+    restart: always
+    depends_on:
+      - airflow-webserver
+    env_file:
+      - .env
+    environment:
+      - PYTHONPATH=/app
+    command: scheduler
+    volumes:
+      - airflow_data:/opt/airflow
+      - ./app:/app
+      - ./data:/app/data
+      - ./secrets:/app/secrets
+      - ./logs:/opt/airflow/logs
+      - ./dags:/opt/airflow/dags
+    networks:
+      - flowventory_network
+
+  app:
+    build: .
+    container_name: flowventory_app
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    environment:
+      - PYTHONPATH=/app
+    command: tail -f /dev/null
+    volumes:
+      - ./app:/app
+      - ./data:/app/data
+      - ./secrets:/app/secrets
+      - ./logs:/app/logs
+    networks:
+      - flowventory_network
+
+volumes:
+  airflow_data:
+
+
+networks:
+  flowventory_network:
+    driver: bridge

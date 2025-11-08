@@ -1,0 +1,15 @@
+apache-airflow==2.9.3
+psycopg2-binary==2.9.9
+SQLAlchemy==1.4.52
+alembic==1.13.1
+Flask==2.2.5
+Werkzeug==2.3.7
+pandas==2.2.3
+numpy==1.26.4
+python-dotenv==1.0.1
+loguru==0.7.2
+kagglehub==0.3.3
+requests==2.32.3
+tqdm==4.66.5
+pathlib==1.0.1
+typing-extensions==4.12.2
