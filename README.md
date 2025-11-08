@@ -1,5 +1,7 @@
 # Flowventory — End-to-End ETL Data Pipeline
 
+https://github.com/abrazawaiz/flowventory-etl/blob/bdd57254d78ba078c0691d2d5b764171482ec565/flowventory_etl_architecture.jpeg
+
 ## Overview
 **Flowventory** is an end-to-end **ETL (Extract, Transform, Load)** project that simulates a production-grade data pipeline using a dataset from **Kaggle**.  
 The data is extracted in CSV format, cleaned and transformed using **Python**, and then loaded into **PostgreSQL**.  
