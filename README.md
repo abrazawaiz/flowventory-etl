@@ -33,5 +33,3 @@ Several technical challenges were encountered during development:
 The first phase of **Flowventory** successfully established a fully containerized, end-to-end ETL system.  
 It demonstrates how modern tools — **Python**, **Airflow**, **PostgreSQL**, and **Docker** — can be combined to build a strong foundation for analytics and data-driven insights.
 
-**Repository:** [github.com/abrazawaiz/flowventory](https://github.com/abrazawaiz/flowventory)  
-**Status:** In Development
